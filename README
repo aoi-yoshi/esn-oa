@@ -1,0 +1,64 @@
+# Online Adaptive Reinforcement Learning with Echo State Networks (ESN-OA)
+
+This repository contains the official implementation of the paper:  
+**"Online Adaptive Reinforcement Learning with Echo State Networks for Non-Stationary Dynamics"** *(Accepted at IJCNN)*
+
+## Overview
+Deploying Reinforcement Learning (RL) policies in the real world is challenging due to non-stationary dynamics, such as sudden friction changes or external disturbances. 
+This repository provides a lightweight online adaptation framework (**ESN-OA**) that integrates an Echo State Network (ESN) with a Soft Actor-Critic (SAC) agent. By updating the readout weights online using Recursive Least Squares (RLS), the agent can rapidly adapt to out-of-distribution (OOD) dynamics in real-time without the need for backpropagation or prior meta-training.
+
+## Requirements
+* Python 3.8+
+* PyTorch
+* Stable-Baselines3
+* Gymnasium (with MuJoCo)
+* NumPy, Matplotlib
+
+```bash
+pip install torch stable-baselines3 gymnasium[mujoco] matplotlib
+
+File Structure & Usage
+-----------------------------------
+The repository is organized by environments (CartPole and HalfCheetah).
+
+[CartPole]
+- train_cartpole.py
+  Train the SAC agent and ESN in a stationary environment.
+
+- eval_cartpole.py
+  Evaluate the robustness against periodic wind disturbances.
+
+- pretrain_wout_cartpole.py
+  Pre-train the ESN readout weights (W_out) using stationary data (for ESN-OA-PT).
+
+- measure_time_cartpole.py
+  Measure and compare the inference time (ms) per control step.
+
+
+[HalfCheetah]
+- train_halfcheetah.py
+  Train the SAC agent and ESN in a stationary MuJoCo environment.
+
+- eval_halfcheetah.py
+  Evaluate the robustness against varying friction coefficients.
+
+- pretrain_wout_halfcheetah.py
+  Pre-train the ESN readout weights (W_out).
+
+- plot_reward_transition_halfcheetah.py
+  Plot the reward transition when the friction coefficient abruptly changes during an episode (reproduces Fig. 5).
+
+- plot_wout_norm_halfcheetah.py
+  Plot the temporal evolution of the ESN output weight update norm (||W_t^out - W_{t-1}^out||) during the friction change (reproduces Fig. 6).
+
+
+-----------------------------------
+Quick Start
+-----------------------------------
+To train the base model on CartPole:
+
+python train_cartpole.py
+
+## Citation
+Aoi Yoshimura and Gouhei Tanaka, Online Adaptive Reinforcement Learning with Echo State Networks for Non-Stationary Dynamics,
+*Proceedings of the 2026 International Joint Conference on Neural Networks (accepted)* [arXiv:2602.06326](https://arxiv.org/abs/2602.06326)
